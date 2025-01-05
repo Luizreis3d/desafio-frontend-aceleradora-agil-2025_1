@@ -1,5 +1,5 @@
 // Configuração da API
-const UNSPLASH_API_URL = "https://api.unsplash.com/photos/?client_id=iJZac-TXnsEYw7tGmwSanfmOOyIcFA5HWR7tq5-8SSQ";
+const UNSPLASH_API_URL = "https://api.unsplash.com/photos/?client_id=krx69f5lOwfnsSOyaEE511fePvgJojVqawDtSPOBAlltFtQvhhHtP6Po";
 const galleryElement = document.getElementById('gallery');
 const searchInput = document.getElementById('search-input');
 const searchButton = document.getElementById('search-button');
