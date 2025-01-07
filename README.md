@@ -13,8 +13,8 @@ de lupa centralizado que oferece clareza e estética. A galeria organiza até 12
 utilizando CSS Grid, ajustando automaticamente o número de imagens por linha conforme o tamanho da tela. A navegação entre 
 páginas é facilitada por uma paginação que exibe no máximo 5 botões por vez, evitando sobrecarregar a interface 
 e garantindo uma experiência fluida. Para visualizações ampliadas, o modal centraliza a imagem selecionada e pode ser 
-fechado ao clicar fora dela ou no botão dedicado, mantendo a interação intuitiva. O rodapé, 
-posicionado abaixo da galeria e da paginação, apresenta informações fixas e bem espaçadas, 
+fechado ao clicar fora dela ou no botão dedicado, mantendo a interação intuitiva. 
+O rodapé, posicionado abaixo da galeria e da paginação, apresenta informações fixas e bem espaçadas, 
 complementando a organização visual.
 
 ## Tecnologias Utilizadas
