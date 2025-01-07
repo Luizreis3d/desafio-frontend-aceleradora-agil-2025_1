@@ -17,13 +17,10 @@ O projeto utiliza a **API do Pexels** para obter as fotos e foi desenvolvido com
   - Mostra no máximo 5 páginas por vez.
   - Botões para navegar entre as páginas.
 
-- **Rodapé Fixo**:
-  - Sempre exibido abaixo da paginação.
-
 ## Tecnologias Utilizadas
 
 - **HTML**: Estrutura da página.
-- **CSS**: Estilização e layout responsivo.
+- **CSS**: Estilização da página.
 - **JavaScript**: Lógica da aplicação e integração com a API do Pexels.
 - **API do Pexels**: Fornecimento de imagens para a galeria.
 
