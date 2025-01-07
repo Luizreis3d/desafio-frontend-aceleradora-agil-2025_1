@@ -1,4 +1,4 @@
-const API_KEY = "SEU_ACCESS_KEY";
+const API_KEY = "krx69f5lOwfnsSOyaEE511fePvgJojVqawDtSPOBAlltFtQvhhHtP6Po";
 const BASE_URL = "https://api.pexels.com/v1";
 
 const gallery = document.getElementById("gallery");
