@@ -1,21 +1,21 @@
 # Galeria de Fotos
 
-Uma aplicação web de galeria de fotos que permite visualizar, pesquisar e navegar por imagens com paginação. 
-O projeto utiliza a **API do Pexels** para obter as fotos e foi desenvolvido com **HTML**, **CSS** e **JavaScript** puros.
+Uma aplicação web de galeria de fotos desenvolvida com **HTML**, **CSS** e **JavaScript** puros, 
+que permite visualizar, pesquisar e navegar por imagens com paginação, utilizando a **API do Pexels**.
+O design foi construído com foco em interface de layout limpo, exibição de imagens pensando na usabilidade 
+e nos requisitos de exibição de uma galeria de fotos dinâmica.
 
-## Funcionalidades
+## Design Visual
 
-- **Visualização de Fotos**:
-  - Exibe até 12 fotos por página.
-  - Ao clicar em uma foto, ela é ampliada em um modal.
-  
-- **Pesquisa de Fotos**:
-  - Busca dinâmica por palavras-chave.
-  - Resultados exibidos com paginação.
-
-- **Paginação**:
-  - Mostra no máximo 5 páginas por vez.
-  - Botões para navegar entre as páginas.
+A aplicação apresenta um cabeçalho simples que exibe o título da galeria, alinhado ao centro e com um fundo escuro 
+para destacar o conteúdo. A barra de busca, funcional e compacta, permite pesquisas dinâmicas, com um botão de ícone 
+de lupa centralizado que oferece clareza e estética. A galeria organiza até 12 imagens por página em um layout responsivo 
+utilizando CSS Grid, ajustando automaticamente o número de imagens por linha conforme o tamanho da tela. A navegação entre 
+páginas é facilitada por uma paginação que exibe no máximo 5 botões por vez, evitando sobrecarregar a interface 
+e garantindo uma experiência fluida. Para visualizações ampliadas, o modal centraliza a imagem selecionada e pode ser 
+fechado ao clicar fora dela ou no botão dedicado, mantendo a interação intuitiva. O rodapé, 
+posicionado abaixo da galeria e da paginação, apresenta informações fixas e bem espaçadas, 
+complementando a organização visual.
 
 ## Tecnologias Utilizadas
 
