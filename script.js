@@ -1,5 +1,6 @@
-const API_KEY = "krx69f5lOwfnsSOyaEE511fePvgJojVqawDtSPOBAlltFtQvhhHtP6Po";
+const API_KEY = "SEU_ACCESS_KEY";
 const BASE_URL = "https://api.pexels.com/v1";
+
 const gallery = document.getElementById("gallery");
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
@@ -12,28 +13,26 @@ const pagination = document.getElementById("pagination");
 
 let currentPage = 1;
 let totalPages = 1;
-let photos = [];
 let currentQuery = "";
 
-// Carregar fotos
+// Função para carregar fotos
 async function loadPhotos(page = 1, query = "") {
     const url = query
         ? `${BASE_URL}/search?query=${query}&per_page=12&page=${page}`
         : `${BASE_URL}/curated?per_page=12&page=${page}`;
+
     try {
         const response = await fetch(url, { headers: { Authorization: API_KEY } });
         const data = await response.json();
-
-        photos = data.photos;
-        totalPages = Math.ceil((data.total_results || 0) / 12) || 1;
+        const photos = data.photos;
 
         if (photos.length > 0) {
             notFound.style.display = "none";
             displayPhotos(photos);
-            updatePagination(page, totalPages);
+            updatePagination(page, Math.ceil(data.total_results / 12) || 1);
         } else {
-            notFound.style.display = "block";
             gallery.innerHTML = "";
+            notFound.style.display = "block";
             pagination.innerHTML = "";
         }
     } catch (error) {
@@ -41,21 +40,23 @@ async function loadPhotos(page = 1, query = "") {
     }
 }
 
-// Exibir fotos
-function displayPhotos(photoList) {
-    gallery.innerHTML = "";
-    photoList.forEach((photo) => {
-        const item = document.createElement("div");
-        item.classList.add("gallery-item");
-        item.innerHTML = `
+// Exibir fotos na galeria
+function displayPhotos(photos) {
+    gallery.innerHTML = photos
+        .map(
+            (photo) => `
+        <div class="gallery-item">
             <img src="${photo.src.medium}" alt="${photo.alt}" data-large="${photo.src.large}">
             <p>${photo.alt || "Sem título"}</p>
-        `;
-        item.querySelector("img").addEventListener("click", () =>
-            openModal(photo.src.large, photo.alt)
-        );
-        gallery.appendChild(item);
-    });
+        </div>`
+        )
+        .join("");
+
+    document.querySelectorAll(".gallery-item img").forEach((img) =>
+        img.addEventListener("click", (e) =>
+            openModal(e.target.getAttribute("data-large"), e.target.alt)
+        )
+    );
 }
 
 // Abrir modal
@@ -66,47 +67,49 @@ function openModal(imageUrl, altText) {
 }
 
 // Fechar modal
-modalClose.addEventListener("click", () => (modal.style.display = "none"));
+function closeModal() {
+    modal.style.display = "none";
+}
+
+// Fechar modal ao clicar no botão de fechar
+modalClose.addEventListener("click", closeModal);
+
+// Fechar modal ao clicar fora da imagem
+modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+        closeModal();
+    }
+});
 
 // Atualizar paginação
 function updatePagination(current, total) {
     pagination.innerHTML = "";
-    const maxPagesToShow = 5;
-    const halfRange = Math.floor(maxPagesToShow / 2);
 
-    let startPage = Math.max(1, current - halfRange);
-    let endPage = Math.min(total, current + halfRange);
-
-    if (current <= halfRange) {
-        endPage = Math.min(total, maxPagesToShow);
-    } else if (current > total - halfRange) {
-        startPage = Math.max(1, total - maxPagesToShow + 1);
-    }
+    const maxButtons = 5;
+    const startPage = Math.max(1, current - Math.floor(maxButtons / 2));
+    const endPage = Math.min(total, startPage + maxButtons - 1);
 
     for (let i = startPage; i <= endPage; i++) {
         const button = document.createElement("button");
         button.textContent = i;
         button.className = i === current ? "active" : "";
-        button.addEventListener("click", () => {
-            currentPage = i;
-            loadPhotos(currentPage, currentQuery);
-        });
+        button.addEventListener("click", () => loadPhotos(i, currentQuery));
         pagination.appendChild(button);
     }
 }
 
-// Eventos
+// Pesquisa
 searchButton.addEventListener("click", () => {
     currentQuery = searchInput.value.trim();
-    currentPage = 1;
-    loadPhotos(currentPage, currentQuery);
+    loadPhotos(1, currentQuery);
 });
 
-searchInput.addEventListener("input", () => {
-    currentQuery = searchInput.value.trim();
-    currentPage = 1;
-    loadPhotos(currentPage, currentQuery);
+searchInput.addEventListener("keyup", (e) => {
+    if (e.key === "Enter") {
+        currentQuery = searchInput.value.trim();
+        loadPhotos(1, currentQuery);
+    }
 });
 
-// Inicializar
+// Inicializar aplicação
 loadPhotos();
