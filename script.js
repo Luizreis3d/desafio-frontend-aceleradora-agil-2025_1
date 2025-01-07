@@ -1,90 +1,112 @@
-const PEXELS_API_URL = "https://api.pexels.com/v1/curated?page=1&per_page=15";
-const SEARCH_API_URL = "https://api.pexels.com/v1/search?query=";
 const API_KEY = "krx69f5lOwfnsSOyaEE511fePvgJojVqawDtSPOBAlltFtQvhhHtP6Po";
-
-const galleryElement = document.getElementById("gallery");
+const BASE_URL = "https://api.pexels.com/v1";
+const gallery = document.getElementById("gallery");
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
-const notFoundElement = document.getElementById("not-found");
+const notFound = document.getElementById("not-found");
+const modal = document.getElementById("modal");
+const modalImage = document.getElementById("modal-image");
+const modalCaption = document.getElementById("modal-caption");
+const modalClose = document.getElementById("modal-close");
+const pagination = document.getElementById("pagination");
+
+let currentPage = 1;
+let totalPages = 1;
 let photos = [];
+let currentQuery = "";
 
-// Função para carregar fotos iniciais
-async function loadPhotos() {
+// Carregar fotos
+async function loadPhotos(page = 1, query = "") {
+    const url = query
+        ? `${BASE_URL}/search?query=${query}&per_page=12&page=${page}`
+        : `${BASE_URL}/curated?per_page=12&page=${page}`;
     try {
-        const response = await fetch(PEXELS_API_URL, {
-            headers: {
-                Authorization: API_KEY,
-            },
-        });
-
-        if (!response.ok) throw new Error("Erro ao carregar as fotos iniciais");
-
+        const response = await fetch(url, { headers: { Authorization: API_KEY } });
         const data = await response.json();
+
         photos = data.photos;
-        displayPhotos(photos);
+        totalPages = Math.ceil((data.total_results || 0) / 12) || 1;
+
+        if (photos.length > 0) {
+            notFound.style.display = "none";
+            displayPhotos(photos);
+            updatePagination(page, totalPages);
+        } else {
+            notFound.style.display = "block";
+            gallery.innerHTML = "";
+            pagination.innerHTML = "";
+        }
     } catch (error) {
-        console.error("Erro:", error);
+        console.error("Erro ao carregar fotos:", error);
     }
 }
 
-// Função para exibir fotos na galeria
+// Exibir fotos
 function displayPhotos(photoList) {
-    galleryElement.innerHTML = "";
+    gallery.innerHTML = "";
     photoList.forEach((photo) => {
         const item = document.createElement("div");
         item.classList.add("gallery-item");
         item.innerHTML = `
-            <img src="${photo.src.medium}" alt="${photo.alt}">
+            <img src="${photo.src.medium}" alt="${photo.alt}" data-large="${photo.src.large}">
             <p>${photo.alt || "Sem título"}</p>
         `;
-        galleryElement.appendChild(item);
+        item.querySelector("img").addEventListener("click", () =>
+            openModal(photo.src.large, photo.alt)
+        );
+        gallery.appendChild(item);
     });
 }
 
-// Função de pesquisa por palavras-chave
-async function searchPhotos(query) {
-    try {
-        const response = await fetch(`${SEARCH_API_URL}${query}&per_page=15&page=1`, {
-            headers: {
-                Authorization: API_KEY,
-            },
+// Abrir modal
+function openModal(imageUrl, altText) {
+    modal.style.display = "flex";
+    modalImage.src = imageUrl;
+    modalCaption.textContent = altText || "Sem descrição";
+}
+
+// Fechar modal
+modalClose.addEventListener("click", () => (modal.style.display = "none"));
+
+// Atualizar paginação
+function updatePagination(current, total) {
+    pagination.innerHTML = "";
+    const maxPagesToShow = 5;
+    const halfRange = Math.floor(maxPagesToShow / 2);
+
+    let startPage = Math.max(1, current - halfRange);
+    let endPage = Math.min(total, current + halfRange);
+
+    if (current <= halfRange) {
+        endPage = Math.min(total, maxPagesToShow);
+    } else if (current > total - halfRange) {
+        startPage = Math.max(1, total - maxPagesToShow + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        const button = document.createElement("button");
+        button.textContent = i;
+        button.className = i === current ? "active" : "";
+        button.addEventListener("click", () => {
+            currentPage = i;
+            loadPhotos(currentPage, currentQuery);
         });
-
-        if (!response.ok) throw new Error("Erro ao realizar a pesquisa");
-
-        const data = await response.json();
-        const filteredPhotos = data.photos;
-
-        if (filteredPhotos.length > 0) {
-            notFoundElement.style.display = "none";
-            displayPhotos(filteredPhotos);
-        } else {
-            notFoundElement.style.display = "block";
-            galleryElement.innerHTML = "";
-        }
-    } catch (error) {
-        console.error("Erro:", error);
+        pagination.appendChild(button);
     }
 }
 
 // Eventos
 searchButton.addEventListener("click", () => {
-    const query = searchInput.value.trim();
-    if (query) {
-        searchPhotos(query);
-    } else {
-        loadPhotos();
-    }
+    currentQuery = searchInput.value.trim();
+    currentPage = 1;
+    loadPhotos(currentPage, currentQuery);
 });
 
 searchInput.addEventListener("input", () => {
-    const query = searchInput.value.trim();
-    if (query) {
-        searchPhotos(query);
-    } else {
-        loadPhotos();
-    }
+    currentQuery = searchInput.value.trim();
+    currentPage = 1;
+    loadPhotos(currentPage, currentQuery);
 });
 
-// Carregar fotos ao iniciar
+// Inicializar
 loadPhotos();

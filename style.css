@@ -4,81 +4,196 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Garante que o corpo ocupe toda a altura da tela */
 }
+
 header {
     text-align: center;
     background-color: #333;
-    color: #ffffff;
+    color: #fff;
     padding: 15px 0;
     font-size: 24px;
+    font-weight: bold;
 }
+
 .search-bar {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin: 20px;
 }
+
 .search-bar input {
     padding: 10px;
     width: 300px;
     font-size: 16px;
-    border: 1px solid #48324e;
+    border: 1px solid #ccc;
     border-radius: 5px;
 }
+
 .search-bar button {
-    padding: 10px;
-    font-size: 16px;
-    background-color: #33333305;
+    padding: 8px;
+    font-size: 14px;
+    background-color: #333;
     color: #fff;
     border: none;
     cursor: pointer;
-    border: 1px solid #48324e;
     border-radius: 5px;
     margin-left: 10px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
 }
+
 .search-bar button:hover {
-    background-color: #f0f0f0;
+    background-color: #555;
 }
+
+/* Galeria */
 .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
-    padding: 10px;
-    max-width: 1400px;
+    padding: 20px;
+    max-width: 1000px;
     margin: 0 auto;
-    padding-bottom: 65px; /* Espaço entre a galeria e o rodapé */
+    flex-grow: 1; /* Faz a galeria ocupar o espaço restante */
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .gallery-item {
     text-align: center;
-    position: relative;
     overflow: hidden;
     border: 1px solid #ddd;
     border-radius: 5px;
+    background: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.gallery-item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
 .gallery-item img {
     width: 100%;
     height: auto;
+    border-bottom: 1px solid #ddd;
     transition: transform 0.3s ease;
 }
+
 .gallery-item img:hover {
-    transform: scale(1.04);
+    transform: scale(1.03);
 }
+
 .gallery-item p {
     padding: 10px;
-    background: #fff;
+    font-size: 16px;
+    color: #333;
     margin: 0;
 }
+
+/* Mensagem de "Nenhuma foto encontrada" */
+.not-found {
+    text-align: center;
+    font-size: 18px;
+    color: #999;
+    margin: 20px 0;
+}
+
+/* Paginação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    gap: 10px;
+}
+
+.pagination button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination button:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.pagination button.active {
+    background-color: #333;
+    color: #fff;
+    border-color: #333;
+    cursor: default;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.modal-content {
+    max-width: 80%;
+    max-height: 80%;
+    border: 5px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+}
+
+.modal-caption {
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: #bbb;
+}
+
+/* Rodapé */
 footer {
     text-align: center;
     padding: 15px 0;
     background-color: #333;
     color: #fff;
-    position: fixed;
+    font-size: 14px;
+    position: relative; /* Rodapé ajusta-se ao conteúdo */
     bottom: 0;
+    left: 0;
     width: 100%;
-}
-.not-found {
-    text-align: center;
-    font-size: 18px;
-    margin: 20px 0;
-    color: #999;
 }
